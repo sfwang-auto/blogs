@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-sans: "Inter", "LXGW WenKai", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+  --color-accent: #2563eb;
+  --color-accent-hover: #1d4ed8;
+}
+
+@layer base {
+  /* ── Language visibility ─────────────────────── */
+  html:not([lang="zh-CN"]) .lang-zh { display: none; }
+  html[lang="zh-CN"] .lang-en { display: none; }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white text-gray-900 antialiased;
+    @apply dark:bg-gray-950 dark:text-gray-100;
+    font-family: var(--font-sans);
+  }
+
+  /* Prose overrides for academic reading */
+  .prose {
+    @apply max-w-none;
+  }
+
+  .prose p {
+    @apply leading-relaxed;
+  }
+
+  .prose a {
+    @apply text-accent no-underline hover:text-accent-hover hover:underline;
+  }
+
+  .prose pre {
+    @apply rounded-lg border border-gray-200 dark:border-gray-800;
+  }
+
+  .prose code {
+    @apply rounded bg-gray-100 px-1 py-0.5 text-sm dark:bg-gray-800;
+  }
+
+  .prose pre code {
+    @apply bg-transparent p-0;
+  }
+
+  .prose img {
+    @apply rounded-lg;
+  }
+
+  .prose table {
+    @apply w-full overflow-hidden rounded-lg;
+  }
+
+  .prose th {
+    @apply bg-gray-50 dark:bg-gray-800;
+  }
+
+  .prose blockquote {
+    @apply border-l-4 border-accent bg-gray-50 not-italic dark:bg-gray-900;
+  }
+
+  /* KaTeX overrides */
+  .katex {
+    @apply text-base;
+  }
+
+  .katex-display {
+    @apply overflow-x-auto overflow-y-hidden py-2;
+  }
+}
+
+/* Copy button for code blocks */
+.copy-btn {
+  @apply absolute right-2 top-2 rounded px-2 py-1 text-xs text-gray-400 opacity-0 transition hover:bg-gray-700 hover:text-white;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+pre:hover .copy-btn {
+  @apply opacity-100;
+}

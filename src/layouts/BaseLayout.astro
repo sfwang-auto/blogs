@@ -1,0 +1,114 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+export interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title,
+  description = "AI + Bioinformatics 博客",
+  ogImage = "/og-image.png",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content="AI + Bio" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- RSS -->
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="AI + Bio Blog"
+      href="/blogs/rss.xml"
+    />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/blogs/favicon.svg" />
+
+    <!-- KaTeX CSS for math rendering -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
+      integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body class="min-h-screen">
+    <Header />
+    <main class="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<script is:inline>
+  // ── Global i18n ──────────────────────────────────────────
+  const I18N_KEY = "site-lang";
+
+  function getLang() {
+    return localStorage.getItem(I18N_KEY) || "zh-CN";
+  }
+
+  function setLang(lang) {
+    localStorage.setItem(I18N_KEY, lang);
+    document.documentElement.lang = lang;
+    applyLang(lang);
+    window.dispatchEvent(new CustomEvent("langchange", { detail: { lang } }));
+  }
+
+  function applyLang(lang) {
+    const isZH = lang === "zh-CN";
+    document.querySelectorAll("[data-zh]").forEach((el) => {
+      if (isZH && el.dataset.zh !== undefined) {
+        el.textContent = el.dataset.zh;
+      } else if (!isZH && el.dataset.en !== undefined) {
+        el.textContent = el.dataset.en;
+      }
+    });
+    // aria-label translations
+    document.querySelectorAll("[data-zh-aria]").forEach((el) => {
+      el.setAttribute(
+        "aria-label",
+        isZH ? el.dataset.zhAria : el.dataset.enAria
+      );
+    });
+    // placeholder translations
+    document.querySelectorAll("[data-zh-placeholder]").forEach((el) => {
+      el.setAttribute(
+        "placeholder",
+        isZH ? el.dataset.zhPlaceholder : el.dataset.enPlaceholder
+      );
+    });
+  }
+
+  // Expose globally for other scripts
+  window.__i18n = { getLang, setLang, applyLang };
+
+  // Apply saved language on page load
+  applyLang(getLang());
+</script>

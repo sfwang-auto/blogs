@@ -1,0 +1,55 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Search - AI + Bio" description="Search articles">
+  <div class="mx-auto max-w-3xl">
+    <h1
+      class="mb-8 text-3xl font-bold text-gray-900 dark:text-gray-100"
+      data-zh="搜索"
+      data-en="Search"
+    >
+      搜索
+    </h1>
+    <div id="search" class="pagefind-ui"></div>
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  function initPagefind(lang) {
+    const el = document.getElementById("search");
+    if (!el) return;
+    // Destroy previous instance if any
+    if (el._pagefindUI) {
+      el.innerHTML = "";
+    }
+
+    const script = document.createElement("script");
+    script.src = "/blogs/pagefind/pagefind-ui.js";
+    script.onload = () => {
+      const isZH = lang === "zh-CN";
+      el._pagefindUI = new window.PagefindUI({
+        element: "#search",
+        baseUrl: "/blogs/pagefind/",
+        showImages: false,
+        showEmptyFilters: false,
+        translations: {
+          placeholder: isZH ? "搜索文章..." : "Search articles...",
+          zero_results: isZH
+            ? "未找到关于 [SEARCH_TERM] 的结果"
+            : "No results for [SEARCH_TERM]",
+        },
+      });
+    };
+    document.head.appendChild(script);
+  }
+
+  // Init with current language
+  const lang = window.__i18n.getLang();
+  initPagefind(lang);
+
+  // Re-init on language change
+  window.addEventListener("langchange", (e) => {
+    initPagefind(e.detail.lang);
+  });
+</script>

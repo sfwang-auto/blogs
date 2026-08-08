@@ -1,0 +1,46 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostCard from "../../components/PostCard.astro";
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection("posts");
+  const tagSet = new Set<string>();
+  allPosts.forEach((post) => {
+    post.data.tags.forEach((tag) => tagSet.add(tag));
+  });
+
+  return [...tagSet].map((tag) => ({ params: { tag } }));
+}
+
+const { tag } = Astro.params;
+
+const allPosts = await getCollection("posts", ({ data }) => {
+  return (import.meta.env.DEV ? true : !data.draft) && data.tags.includes(tag!);
+});
+
+const posts = allPosts.sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+---
+
+<BaseLayout title={`#${tag} - AI + Bio`} description={`Articles tagged with "${tag}"`}>
+  <div class="mx-auto max-w-3xl">
+    <h1 class="mb-2 text-3xl font-bold text-gray-900 dark:text-gray-100">
+      #<span class="text-accent">{tag}</span>
+    </h1>
+    <p class="mb-8 text-gray-500 dark:text-gray-400">
+      <span data-zh="{posts.length} 篇文章" data-en="{posts.length} article{posts.length !== 1 ? 's' : ''}">
+        {posts.length} 篇文章
+      </span>
+    </p>
+
+    {posts.map((post) => <PostCard post={post} />)}
+
+    <p class="mt-8 text-sm">
+      <a href="/blogs/tags" class="text-accent hover:underline">
+        <span data-zh="&larr; 所有标签" data-en="&larr; All tags">&larr; 所有标签</span>
+      </a>
+    </p>
+  </div>
+</BaseLayout>

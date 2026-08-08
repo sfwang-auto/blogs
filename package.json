@@ -1,0 +1,22 @@
+{
+  "name": "ai-bio-blog",
+  "type": "module",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "postbuild": "pagefind --site dist"
+  },
+  "dependencies": {
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^5.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.0.0",
+    "pagefind": "^1.2.0",
+    "tailwindcss": "^4.0.0"
+  }
+}

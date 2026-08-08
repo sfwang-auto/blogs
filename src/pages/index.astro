@@ -1,0 +1,54 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
+
+const allPosts = await getCollection("posts", ({ data }) => {
+  return import.meta.env.DEV ? true : !data.draft;
+});
+
+const posts = allPosts.sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+---
+
+<BaseLayout
+  title="AI + Bio"
+  description="分享 AI 与生物信息学交叉领域的研究、工具与思考"
+>
+  <div class="mx-auto max-w-3xl">
+    <!-- Site intro -->
+    <section class="mb-12">
+      <h1
+        class="mb-3 text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl"
+      >
+        AI + Bio
+      </h1>
+      <p
+        class="text-lg text-gray-600 leading-relaxed dark:text-gray-300"
+        data-zh="探索人工智能与生物学的交汇点 —— 蛋白质设计、基因组序列建模、单细胞分析等领域的前沿进展与技术笔记。"
+        data-en="Exploring the intersection of artificial intelligence and biology — deep learning for protein design, genomic sequence modeling, single-cell analysis, and more."
+      >
+        探索人工智能与生物学的交汇点 —— 蛋白质设计、基因组序列建模、单细胞分析等领域的前沿进展与技术笔记。
+      </p>
+    </section>
+
+    <!-- Post list -->
+    <section>
+      {
+        posts.length === 0 ? (
+          <p
+            class="py-12 text-center text-gray-500 dark:text-gray-400"
+            data-zh="暂无文章，敬请期待！"
+            data-en="No posts yet. Check back soon!"
+          >
+            暂无文章，敬请期待！
+          </p>
+        ) : (
+          posts.map((post) => <PostCard post={post} />)
+        )
+      }
+    </section>
+  </div>
+</BaseLayout>

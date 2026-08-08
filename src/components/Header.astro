@@ -1,0 +1,222 @@
+---
+const navItems = [
+  { href: "/blogs", zh: "首页", en: "Home" },
+  { href: "/blogs/archive", zh: "归档", en: "Archive" },
+  { href: "/blogs/tags", zh: "标签", en: "Tags" },
+  { href: "/blogs/about", zh: "关于", en: "About" },
+];
+---
+
+<header
+  class="sticky top-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur dark:border-gray-800 dark:bg-gray-950/80"
+>
+  <nav class="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6">
+    <!-- Site Name -->
+    <a
+      href="/blogs"
+      class="text-xl font-bold tracking-tight text-gray-900 no-underline dark:text-gray-100"
+    >
+      AI + Bio
+    </a>
+
+    <!-- Desktop Nav -->
+    <ul class="hidden items-center gap-1 sm:flex">
+      {navItems.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class="rounded-lg px-3 py-2 text-sm text-gray-600 transition hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
+            data-zh={item.zh}
+            data-en={item.en}
+          >
+            {item.zh}
+          </a>
+        </li>
+      ))}
+      <!-- Search Link -->
+      <li>
+        <a
+          href="/blogs/search"
+          class="rounded-lg px-3 py-2 text-sm text-gray-600 transition hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
+          data-zh-aria="搜索"
+          data-en-aria="Search"
+          aria-label="搜索"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+        </a>
+      </li>
+      <!-- Language Toggle -->
+      <li>
+        <button
+          id="lang-toggle"
+          class="rounded-lg px-2 py-2 text-xs text-gray-500 transition hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+          data-zh-aria="切换到英文"
+          data-en-aria="Switch to Chinese"
+          aria-label="切换到英文"
+        >
+          <span class="hidden-lang-zh">EN</span>
+          <span class="hidden-lang-en">中</span>
+        </button>
+      </li>
+      <!-- Theme Toggle -->
+      <li>
+        <button
+          id="theme-toggle"
+          class="rounded-lg px-3 py-2 text-sm text-gray-600 transition hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
+          data-zh-aria="切换暗色模式"
+          data-en-aria="Toggle dark mode"
+          aria-label="切换暗色模式"
+        >
+          <span class="block dark:hidden">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </span>
+          <span class="hidden dark:block">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+          </span>
+        </button>
+      </li>
+    </ul>
+
+    <!-- Mobile Menu Button -->
+    <button
+      id="mobile-menu-btn"
+      class="flex items-center gap-2 sm:hidden"
+      data-zh-aria="菜单"
+      data-en-aria="Menu"
+      aria-label="菜单"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div
+    id="mobile-menu"
+    class="hidden border-t border-gray-200 bg-white px-4 py-3 dark:border-gray-800 dark:bg-gray-950 sm:hidden"
+  >
+    <ul class="flex flex-col gap-1">
+      {navItems.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class="block rounded-lg px-3 py-2 text-sm text-gray-600 transition hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
+            data-zh={item.zh}
+            data-en={item.en}
+          >
+            {item.zh}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</header>
+
+<script>
+  // Mobile menu toggle
+  document.getElementById("mobile-menu-btn")?.addEventListener("click", () => {
+    document.getElementById("mobile-menu")?.classList.toggle("hidden");
+  });
+
+  // Language toggle
+  document.getElementById("lang-toggle")?.addEventListener("click", () => {
+    const current = window.__i18n.getLang();
+    const next = current === "zh-CN" ? "en" : "zh-CN";
+    window.__i18n.setLang(next);
+    updateLangToggleUI(next);
+  });
+
+  function updateLangToggleUI(lang) {
+    const toggle = document.getElementById("lang-toggle");
+    if (!toggle) return;
+    const zhSpan = toggle.querySelector(".hidden-lang-zh");
+    const enSpan = toggle.querySelector(".hidden-lang-en");
+    if (lang === "zh-CN") {
+      zhSpan?.classList.remove("hidden");
+      enSpan?.classList.add("hidden");
+    } else {
+      zhSpan?.classList.add("hidden");
+      enSpan?.classList.remove("hidden");
+    }
+  }
+
+  // Init lang toggle UI on load
+  updateLangToggleUI(window.__i18n.getLang());
+
+  // Dark mode toggle
+  const themeToggle = document.getElementById("theme-toggle");
+  themeToggle?.addEventListener("click", () => {
+    document.documentElement.classList.toggle("dark");
+    localStorage.setItem(
+      "theme",
+      document.documentElement.classList.contains("dark") ? "dark" : "light"
+    );
+  });
+
+  // Init theme from localStorage
+  if (
+    localStorage.getItem("theme") === "dark" ||
+    (!localStorage.getItem("theme") &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches)
+  ) {
+    document.documentElement.classList.add("dark");
+  }
+</script>
