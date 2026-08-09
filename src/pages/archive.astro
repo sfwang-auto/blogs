@@ -76,6 +76,9 @@ const years = [...byYear.entries()].sort((a, b) => b[0] - a[0]);
               {yearPosts.map((mp) => {
                 const primary = mp.zh || mp.en;
                 if (!primary) return null;
+                const zhUrl = mp.zh ? `/blogs/posts/${mp.zh.id.replace(/\.md$/, "")}` : null;
+                const enUrl = mp.en ? `/blogs/posts/${mp.en.id.replace(/\.md$/, "")}` : null;
+                const hasTranslation = !!(mp.zh && mp.en);
                 return (
                   <li class="flex items-baseline gap-4">
                     <span class="shrink-0 text-sm text-gray-400 tabular-nums">
@@ -85,20 +88,22 @@ const years = [...byYear.entries()].sort((a, b) => b[0] - a[0]);
                       })}
                     </span>
                     <a
-                      href={`/blogs/posts/${primary.id.replace(/\.md$/, "")}`}
-                      class="text-gray-700 no-underline transition hover:text-accent"
+                      href={zhUrl || enUrl}
+                      class="archive-link text-gray-700 no-underline transition hover:text-accent"
+                      data-zh-url={zhUrl}
+                      data-en-url={enUrl}
                     >
                       {primary.data.title}
                     </a>
-                    {mp.zh && mp.en && (
-                      <span class="flex gap-1 text-xs text-gray-400">
+                    {hasTranslation && (
+                      <span class="lang-links flex gap-1 text-xs text-gray-400">
                         <a
-                          href={`/blogs/posts/${mp.zh.id.replace(/\.md$/, "")}`}
+                          href={zhUrl!}
                           class="hover:text-accent"
                         >中文</a>
                         <span>·</span>
                         <a
-                          href={`/blogs/posts/${mp.en.id.replace(/\.md$/, "")}`}
+                          href={enUrl!}
                           class="hover:text-accent"
                         >EN</a>
                       </span>
@@ -113,3 +118,22 @@ const years = [...byYear.entries()].sort((a, b) => b[0] - a[0]);
     }
   </div>
 </BaseLayout>
+
+<script>
+  function updateArchiveLinks(lang) {
+    document.querySelectorAll(".archive-link").forEach((link) => {
+      const url = lang === "zh-CN"
+        ? link.dataset.zhUrl
+        : link.dataset.enUrl;
+      if (url) link.setAttribute("href", url);
+    });
+  }
+
+  // Init on load
+  updateArchiveLinks(window.__i18n.getLang());
+
+  // Update on language change
+  window.addEventListener("langchange", (e) => {
+    updateArchiveLinks(e.detail.lang);
+  });
+</script>
