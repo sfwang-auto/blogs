@@ -19,9 +19,16 @@ const allPosts = await getCollection("posts", ({ data }) => {
   return (import.meta.env.DEV ? true : !data.draft) && data.tags.includes(tag!);
 });
 
-const posts = allPosts.sort(
-  (a, b) => b.data.date.getTime() - a.data.date.getTime()
-);
+// Deduplicate by base slug — translation pairs count as one article
+const seenSlugs = new Set<string>();
+const posts = allPosts
+  .filter((post) => {
+    const base = post.id.replace(/\.en\.md$/, ".md");
+    if (seenSlugs.has(base)) return false;
+    seenSlugs.add(base);
+    return true;
+  })
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
 <BaseLayout title={`#${tag} - AI + Bio`} description={`Articles tagged with "${tag}"`}>

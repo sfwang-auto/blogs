@@ -6,9 +6,18 @@ const allPosts = await getCollection("posts", ({ data }) => {
   return import.meta.env.DEV ? true : !data.draft;
 });
 
+// Deduplicate by base slug (merge translation pairs) before counting tags
+const seenSlugs = new Set<string>();
+const uniquePosts = allPosts.filter((post) => {
+  const base = post.id.replace(/\.en\.md$/, ".md");
+  if (seenSlugs.has(base)) return false;
+  seenSlugs.add(base);
+  return true;
+});
+
 // Aggregate tags with counts
 const tagMap = new Map<string, number>();
-allPosts.forEach((post) => {
+uniquePosts.forEach((post) => {
   post.data.tags.forEach((tag) => {
     tagMap.set(tag, (tagMap.get(tag) ?? 0) + 1);
   });
