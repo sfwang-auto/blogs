@@ -8,6 +8,7 @@ export default defineConfig({
   base: "/blogs",
   integrations: [sitemap()],
   vite: {
+    // @ts-expect-error — @tailwindcss/vite types mismatch with Astro's bundled Vite; works fine at runtime
     plugins: [tailwindcss()],
   },
   markdown: {
