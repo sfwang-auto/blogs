@@ -26,10 +26,10 @@ const posts = allPosts.sort(
 
 <BaseLayout title={`#${tag} - AI + Bio`} description={`Articles tagged with "${tag}"`}>
   <div class="mx-auto max-w-3xl">
-    <h1 class="mb-2 text-3xl font-bold text-gray-900 dark:text-gray-100">
+    <h1 class="mb-2 text-3xl font-bold text-gray-900">
       #<span class="text-accent">{tag}</span>
     </h1>
-    <p class="mb-8 text-gray-500 dark:text-gray-400">
+    <p class="mb-8 text-gray-500">
       <span data-zh="{posts.length} 篇文章" data-en="{posts.length} article{posts.length !== 1 ? 's' : ''}">
         {posts.length} 篇文章
       </span>

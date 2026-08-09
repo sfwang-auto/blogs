@@ -1,5 +1,5 @@
 <h3
-  class="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100"
+  class="mb-4 text-lg font-semibold text-gray-900"
   data-zh="评论"
   data-en="Comments"
 >
@@ -29,10 +29,7 @@
     script.setAttribute("data-reactions-enabled", "1");
     script.setAttribute("data-emit-metadata", "1");
     script.setAttribute("data-input-position", "bottom");
-    script.setAttribute(
-      "data-theme",
-      document.documentElement.classList.contains("dark") ? "dark" : "light"
-    );
+    script.setAttribute("data-theme", "light");
     script.setAttribute("data-lang", lang);
     script.setAttribute("crossorigin", "anonymous");
     script.async = true;
@@ -71,14 +68,5 @@
   window.addEventListener("langchange", (e) => {
     const newLang = e.detail.lang;
     sendGiscus({ lang: newLang });
-  });
-
-  // ── Follow theme changes ──────────────────────────
-  document.getElementById("theme-toggle")?.addEventListener("click", () => {
-    sendGiscus({
-      theme: document.documentElement.classList.contains("dark")
-        ? "dark"
-        : "light",
-    });
   });
 </script>

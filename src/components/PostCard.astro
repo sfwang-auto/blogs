@@ -11,19 +11,19 @@ const formattedDate = date.toLocaleDateString(
 );
 ---
 
-<article class={`group border-b border-gray-100 py-8 last:border-0 dark:border-gray-800 ${lang === "zh-CN" ? "lang-zh" : "lang-en"}`}>
+<article class={`group border-b border-gray-100 py-8 last:border-0 ${lang === "zh-CN" ? "lang-zh" : "lang-en"}`}>
   <a href={`/blogs/posts/${post.id.replace(/\.md$/, "")}`} class="no-underline">
-    <h2 class="mb-2 text-xl font-semibold text-gray-900 transition group-hover:text-accent dark:text-gray-100">
+    <h2 class="mb-2 text-xl font-semibold text-gray-900 transition group-hover:text-accent">
       {title}
     </h2>
   </a>
-  <div class="mb-3 flex flex-wrap items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+  <div class="mb-3 flex flex-wrap items-center gap-2 text-sm text-gray-500">
     <time datetime={date.toISOString()}>{formattedDate}</time>
     <span>·</span>
     {tags.slice(0, 3).map((tag) => <TagBadge tag={tag} />)}
     {tags.length > 3 && <span class="text-xs">+{tags.length - 3} more</span>}
   </div>
   {summary && (
-    <p class="text-gray-600 leading-relaxed dark:text-gray-300">{summary}</p>
+    <p class="text-gray-600 leading-relaxed">{summary}</p>
   )}
 </article>

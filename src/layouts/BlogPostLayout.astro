@@ -43,13 +43,13 @@ const headings = post.rendered
 <BaseLayout title={displayTitle} description={summary}>
   <article class="mx-auto">
     <!-- Article Header -->
-    <header class="mb-8 border-b border-gray-200 pb-8 dark:border-gray-800">
+    <header class="mb-8 border-b border-gray-200 pb-8">
       <h1
-        class="mb-4 text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl"
+        class="mb-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl"
       >
         {title}
       </h1>
-      <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
+      <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500">
         <time datetime={date.toISOString()}>{formattedDate}</time>
         {
           updated && (
@@ -70,7 +70,7 @@ const headings = post.rendered
       translationUrl && (
         <div
           id="translation-banner"
-          class="mb-8 rounded-lg border border-blue-200 bg-blue-50 p-3 text-sm dark:border-blue-800 dark:bg-blue-950"
+          class="mb-8 rounded-lg border border-blue-200 bg-blue-50 p-3 text-sm"
           data-translation-url={translationUrl}
           data-translation-lang={translationLang}
         >
@@ -90,7 +90,7 @@ const headings = post.rendered
     <!-- Article Content with TOC -->
     <div class="lg:grid lg:grid-cols-[1fr_200px] lg:gap-8">
       <div
-        class="prose prose-gray max-w-none dark:prose-invert lg:prose-lg"
+        class="prose prose-gray max-w-none lg:prose-lg"
         data-pagefind-body
       >
         <slot />
@@ -101,7 +101,7 @@ const headings = post.rendered
     </div>
 
     <!-- Post Navigation -->
-    <footer class="mt-12 border-t border-gray-200 pt-8 dark:border-gray-800">
+    <footer class="mt-12 border-t border-gray-200 pt-8">
       <Comments />
     </footer>
   </article>
