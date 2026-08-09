@@ -15,8 +15,32 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await post.render();
+
+// Find translation based on naming convention:
+//   hello-world.md    ↔  hello-world.en.md
+const allPosts = await getCollection("posts", ({ data }) => !data.draft);
+let translationUrl: string | null = null;
+let translationLang: string | null = null;
+
+if (post.data.lang === "zh-CN") {
+  const enId = post.id.replace(/\.md$/, ".en.md");
+  const enPost = allPosts.find((p) => p.id === enId && p.data.lang === "en");
+  if (enPost) {
+    translationUrl = `/blogs/posts/${enPost.id.replace(/\.md$/, "")}`;
+    translationLang = "en";
+  }
+} else if (post.data.lang === "en") {
+  const zhId = post.id.replace(/\.en\.md$/, ".md");
+  const zhPost = allPosts.find(
+    (p) => p.id === zhId && p.data.lang === "zh-CN"
+  );
+  if (zhPost) {
+    translationUrl = `/blogs/posts/${zhPost.id.replace(/\.md$/, "")}`;
+    translationLang = "zh-CN";
+  }
+}
 ---
 
-<BlogPostLayout post={post}>
+<BlogPostLayout post={post} translationUrl={translationUrl} translationLang={translationLang}>
   <Content />
 </BlogPostLayout>

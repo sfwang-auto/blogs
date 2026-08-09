@@ -7,9 +7,11 @@ import TagBadge from "../components/TagBadge.astro";
 
 export interface Props {
   post: CollectionEntry<"posts">;
+  translationUrl?: string | null;
+  translationLang?: string | null;
 }
 
-const { post } = Astro.props;
+const { post, translationUrl = null, translationLang = null } = Astro.props;
 const { title, date, updated, tags, summary, lang, math } = post.data;
 const formattedDate = date.toLocaleDateString(
   lang === "zh-CN" ? "zh-CN" : "en-US",
@@ -63,6 +65,28 @@ const headings = post.rendered
       </div>
     </header>
 
+    <!-- Translation banner -->
+    {
+      translationUrl && (
+        <div
+          id="translation-banner"
+          class="mb-8 rounded-lg border border-blue-200 bg-blue-50 p-3 text-sm dark:border-blue-800 dark:bg-blue-950"
+          data-translation-url={translationUrl}
+          data-translation-lang={translationLang}
+        >
+          <span data-zh="本文有" data-en="This post is also available in">
+            本文有
+          </span>
+          <a
+            href={translationUrl}
+            class="ml-1 font-medium text-accent hover:underline"
+          >
+            {translationLang === "zh-CN" ? "中文" : "English"}
+          </a>
+          <span data-zh="版本" data-en=""></span>
+        </div>
+      )
+    }
     <!-- Article Content with TOC -->
     <div class="lg:grid lg:grid-cols-[1fr_200px] lg:gap-8">
       <div
@@ -98,4 +122,16 @@ const headings = post.rendered
     pre.style.position = "relative";
     pre.appendChild(btn);
   });
+
+  // Auto-navigate to translation on global language toggle
+  const banner = document.getElementById("translation-banner");
+  if (banner) {
+    const translationUrl = banner.dataset.translationUrl;
+    const translationLang = banner.dataset.translationLang;
+    window.addEventListener("langchange", (e) => {
+      if (e.detail.lang === translationLang) {
+        window.location.href = translationUrl;
+      }
+    });
+  }
 </script>
