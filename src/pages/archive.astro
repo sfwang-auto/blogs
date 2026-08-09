@@ -50,7 +50,7 @@ const years = [...byYear.entries()].sort((a, b) => b[0] - a[0]);
             </h2>
             <ul class="space-y-3">
               {yearPosts.map((post) => (
-                <li class="flex items-baseline gap-4">
+                <li class={`flex items-baseline gap-4 ${post.data.lang === "zh-CN" ? "lang-zh" : "lang-en"}`}>
                   <span class="shrink-0 text-sm text-gray-400 dark:text-gray-500 tabular-nums">
                     {post.data.date.toLocaleDateString("zh-CN", {
                       month: "short",
